@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>East African Wall Street</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Open Sans', sans-serif; margin:0; background:#fff; color:#222; line-height:1.6; }
+    header { background:#0a0a23; color:#fff; padding:1rem 2rem; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:1000; }
+    header h1 { margin:0; font-size:1.5rem; }
+    nav { display:flex; align-items:center; gap:1rem; }
+    nav a { color:#fff; text-decoration:none; font-weight:600; padding:0.5rem; display:block; }
+    nav a:hover { color:#f4c542; }
+
+    /* Dropdown */
+    .dropdown { position: relative; }
+    .dropdown-content { display: none; position: absolute; background:#0a0a23; min-width:150px; top:100%; left:0; z-index:1000; }
+    .dropdown-content a { color:#fff; padding:0.5rem 1rem; display:block; }
+    .dropdown-content a:hover { background:#f4c542; color:#000; }
+    .dropdown:hover .dropdown-content { display:block; }
+
+    .hero { position:relative; height:400px; overflow:hidden; }
+    .slide { position:absolute; width:100%; height:100%; background-size:cover; background-position:center; display:flex; align-items:flex-end; justify-content:left; color:#fff; padding:2rem; opacity:0; transition:opacity 1s ease-in-out; }
+    .slide.active { opacity:1; }
+    .slide h2 { background:rgba(0,0,0,0.6); padding:1rem; margin:0; }
+
+    .grid { display:flex; flex-wrap:wrap; padding:2rem; gap:2rem; }
+    .main { flex:3; }
+    .sidebar { flex:1; background:#fafafa; padding:1rem; border-left:1px solid #ddd; }
+
+    .card { background:#fff; border:1px solid #ddd; margin-bottom:1.5rem; padding:1rem; }
+    .card img { width:100%; height:auto; margin-bottom:0.5rem; }
+    .card h3 { margin:0.5rem 0; font-size:1.2rem; }
+    .card p { font-size:0.95rem; color:#555; }
+
+    .sidebar h3 { margin-top:0; }
+    .sidebar ul { list-style:none; padding:0; }
+    .sidebar li { margin-bottom:0.75rem; }
+    .sidebar a { text-decoration:none; color:#0a0a23; font-weight:600; }
+
+    footer { background:#0a0a23; color:#fff; text-align:center; padding:1.5rem; font-size:0.9rem; margin-top:2rem; }
+
+    @media (max-width:900px) { .grid { flex-direction:column; } .sidebar { border-left:none; } nav { flex-direction:column; gap:0; } .dropdown-content { position:static; } }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>East African Wall Street</h1>
+  <nav>
+    <div class="dropdown">
+      <a href="#">Markets ▾</a>
+      <div class="dropdown-content">
+        <a href="#">Stocks</a>
+        <a href="#">Forex</a>
+        <a href="#">Commodities</a>
+      </div>
+    </div>
+    <a href="#">Banking</a>
+    <a href="#">Fintech</a>
+    <div class="dropdown">
+      <a href="#">Policy ▾</a>
+      <div class="dropdown-content">
+        <a href="#">Government</a>
+        <a href="#">Economy</a>
+      </div>
+    </div>
+    <div class="dropdown">
+      <a href="#">Culture ▾</a>
+      <div class="dropdown-content">
+        <a href="#">Music</a>
+        <a href="#">Lifestyle</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<section class="hero" id="hero"></section>
+
+<section class="grid">
+  <div class="main" id="main-cards"></div>
+
+  <aside class="sidebar">
+    <h3>Trending</h3>
+    <ul>
+      <li><a href="#">Tyla becomes first African solo artist with 1B Spotify streams</a></li>
+      <li><a href="#">US investors eye Nairobi’s real estate market</a></li>
+      <li><a href="#">Gengetone and Amapiano dominate African clubs</a></li>
+      <li><a href="#">Tesla explores EV partnerships in Africa</a></li>
+    </ul>
+  </aside>
+</section>
+
+<footer>
+  <p>&copy; 2025 East African Wall Street</p>
+</footer>
+
+<script>
+  // Dummy content arrays (will be replaced by Netlify CMS later)
+  const slidesData = [
+    { title: "Africa’s Fintech Boom: Mobile Money Leading the Way", image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d" },
+    { title: "USA-Africa Trade Relations Hit Record High", image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3" },
+    { title: "Afrobeats & Hip-Hop: The Global Music Fusion", image: "https://images.unsplash.com/photo-1507874457470-272b3c8d8ee2" }
+  ];
+
+  const cardsData = [
+    { title: "Kenya & USA Strengthen Business Ties", image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f", description: "Kenya’s exports to the US have grown by 20% in the past year, driven by textiles, coffee, and tech outsourcing partnerships." },
+    { title: "Afrobeats Takes Over New York", image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4", description: "Artists like Burna Boy, Ayra Starr, and Davido are selling out arenas in the US, proving Africa’s sound is now global." },
+    { title: "East Africa’s Tech Startups Raise $500M", image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d", description: "From Nairobi to Kigali, startups are attracting global investors, with fintech and agritech leading the charge." }
+  ];
+
+  // Render hero slides
+  const hero = document.getElementById('hero');
+  slidesData.forEach((slide, i) => {
+    const div = document.createElement('div');
+    div.className = 'slide' + (i === 0 ? ' active' : '');
+    div.style.backgroundImage = `url('${slide.image}')`;
+    div.innerHTML = `<h2>${slide.title}</h2>`;
+    hero.appendChild(div);
+  });
+
+  // Render cards
+  const mainCards = document.getElementById('main-cards');
+  cardsData.forEach(card => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `<img src="${card.image}" alt="${card.title}"><h3>${card.title}</h3><p>${card.description}</p>`;
+    mainCards.appendChild(div);
+  });
+
+  // Hero slider animation
+  let slides = document.querySelectorAll('.slide');
+  let index = 0;
+  setInterval(() => {
+    slides[index].classList.remove('active');
+    index = (index + 1) % slides.length;
+    slides[index].classList.add('active');
+  }, 4000);
+</script>
+
+</body>
+</html>
